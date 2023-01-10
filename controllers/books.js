@@ -10,6 +10,18 @@ const getBooks = asyncHandler(async (req,res) => {
     res.status(200).json({books})
 })
 
+const getBook = asyncHandler(async (req,res) => {
+    const isbn = req.params.isbn || "";
+    console.log(isbn)
+    const book = await Book.findOne({ISBN10:isbn}).populate(["authors",'categories','publisher']);
+    if(!book) {
+        res.status(400)
+        throw new Error("No book found with that ISBN")
+    }
+    res.status(200).json({book})
+})
+
 module.exports = {
-    getBooks
+    getBooks,
+    getBook
 }

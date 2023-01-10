@@ -8,6 +8,9 @@ require("./models/Author")
 require("./models/Book")
 require("./models/Category")
 require("./models/Publisher")
+require("./models/Bookshelf")
+require("./models/User")
+require("./models/UserBooks")
 
 connectDB();
 const port = process.env.PORT || 5000;
@@ -21,7 +24,7 @@ app.use(expressSession({
     secret: "secret, trust me!",
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV || "development",
+        secure: process.env.NODE_ENV === "production",
         maxAge: 1000 * 60 * 60 * 24
     }
 }))
@@ -29,6 +32,7 @@ app.use(expressSession({
 //ROUTES
 app.use('/api/books', require("./routes/books.js"))
 app.use('/api/auth', require("./routes/auth.js"))
+app.use('/api/user', require("./routes/user.js"))
 
 //ERROR FALLBACK
 app.use(errorHandler)

@@ -1,10 +1,11 @@
 const express = require("express");
-const { getUserBooks, getUserShelves, addBookToUserBooks, addBookToShelf, editUserBook, createUserShelf, deleteUserShelf, removeBookFromShelf, removeUserBook } = require("../controllers/user");
+const { getUserBooks, getUserShelves, addBookToUserBooks, addBookToShelf, editUserBook, createUserShelf, deleteUserShelf, removeBookFromShelf, removeUserBook, getUser } = require("../controllers/user");
 const { authRequired } = require("../middleware/authRequired");
 
 const router = express.Router();
 
 router.use(authRequired)
+router.get('/', getUser)
 router.get('/shelves', getUserShelves)
 router.post('/shelves', createUserShelf);
 router.delete('/shelves/:id', deleteUserShelf);

@@ -1,5 +1,6 @@
 const express = require("express")
 const _ = require("dotenv").config();
+const cors = require("cors")
 const expressSession = require("express-session")
 
 const connectDB = require("./config/db")
@@ -18,6 +19,12 @@ const port = process.env.PORT || 5000;
 const app = express()
 
 app.use(express.json())
+app.use(
+	cors({
+		origin: ["http://localhost:3000"],
+		credentials: true,
+	})
+);
 app.use(expressSession({
     name: "br-s",
     resave: false,

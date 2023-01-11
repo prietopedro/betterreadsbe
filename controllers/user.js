@@ -1,7 +1,13 @@
 const asyncHandler = require("express-async-handler");
 const Book = require("../models/Book");
-const Bookshelf = require("../models/Bookshelf")
+const Bookshelf = require("../models/Bookshelf");
+const User = require("../models/User");
 const UserBook = require('../models/UserBooks');
+
+const getUser = asyncHandler(async (req,res) => {
+    return res.status(200).json({user:req.user})
+ })
+
 const getUserShelves = asyncHandler(async (req,res) => {
     let shelves = await Bookshelf.find({user: req.user}).populate([{path: 'books', populate: ["book"]}])
     return res.status(200).json({shelves})
@@ -127,5 +133,6 @@ module.exports = {
     createUserShelf, 
     deleteUserShelf, 
     removeBookFromShelf,
-    removeUserBook
+    removeUserBook,
+    getUser
  }

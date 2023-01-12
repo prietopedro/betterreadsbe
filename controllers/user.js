@@ -52,7 +52,7 @@ const createUserShelf = asyncHandler(async (req,res) => {
 })
 
 const getUserBooks = asyncHandler(async (req,res) => {
-    const books = await UserBook.find({user: req.user}).populate(['book'])
+    const books = await UserBook.find({user: req.user}).populate([{path: 'books', populate: ["book"]}])
     res.status(200).json({books})
 })
 
@@ -119,7 +119,7 @@ const removeBookFromShelf = asyncHandler(async (req,res) => {
     }
     shelf.books = shelf.books.filter(x => !req.body.books.includes(x._id.toString()))
     shelf.save();
-    shelf = await Bookshelf.findById(req.params.id).populate({path: 'books', populate: ["book"]})
+    shelf = await Bookshelf.findById(req.params.id).populate({path: 'book', populate: ["authors", "categories", "publisher"]})
     res.status(200).json({shelf})
 })
 

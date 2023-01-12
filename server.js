@@ -6,7 +6,6 @@ const cookieParser = require("cookie-parser")
 
 const connectDB = require("./config/db")
 const {errorHandler} = require("./middleware/errorMiddleware");
-const cookieParser = require("cookie-parser");
 require("./models/Author")
 require("./models/Book")
 require("./models/Category")

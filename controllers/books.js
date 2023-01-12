@@ -7,7 +7,8 @@ const getBooks = asyncHandler(async (req,res) => {
     const booksPerPage = 10;
 
     const books = await Book.find({title:{$regex:name, $options: 'i'}}).sort({title: 1}).skip(page * booksPerPage).limit(booksPerPage).populate(["authors",'categories','publisher']);
-    res.status(200).json({books})
+    const totalBooks = await Book.find({title:{$regex:name, $options: 'i'}}).count();
+    res.status(200).json({books, totalBooks})
 })
 
 const getBook = asyncHandler(async (req,res) => {

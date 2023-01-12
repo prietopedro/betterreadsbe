@@ -99,9 +99,7 @@ const editUserBook = asyncHandler(async (req,res) => {
 })
 
 const addBookToShelf = asyncHandler(async (req,res) => {
-    console.log(req.body.books)
     const userBooks = await UserBook.find({_id: {$in: req.body.books}})
-    console.log(userBooks)
     let shelf = await Bookshelf.findById(req.params.id).populate(['books'])
     if(!userBooks.length || !shelf){
         res.status(400)
@@ -115,11 +113,11 @@ const addBookToShelf = asyncHandler(async (req,res) => {
 
 const removeBookFromShelf = asyncHandler(async (req,res) => {
     let shelf = await Bookshelf.findById(req.params.id).populate(['books'])
-    if(!shelf || !userBook.length){
+    if(!shelf){
         res.status(400)
         throw new Error("No Book or Shelf Found with that ID")
     }
-    shelf.books.filter(x => !req.body.books.include(x._id))
+    shelf.books = shelf.books.filter(x => !req.body.books.includes(x._id.toString()))
     shelf.save();
     shelf = await Bookshelf.findById(req.params.id).populate({path: 'books', populate: ["book"]})
     res.status(200).json({shelf})

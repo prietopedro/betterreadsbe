@@ -26,6 +26,7 @@ app.use(
 		credentials: true,
 	})
 );
+app.set('trust proxy', 1);
 app.use(expressSession({
     name: "br-s",
     resave: false,
@@ -35,11 +36,10 @@ app.use(expressSession({
         secure: process.env.NODE_ENV === "production",
         maxAge: 1000 * 60 * 60 * 24,
         httpOnly: true,
-        sameSite: 'none'
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "strict"
     }
 }))
 app.use(cookieParser());
-app.set('trust proxy', 1);
 
 //ROUTES
 app.use('/api/books', require("./routes/books.js"))
